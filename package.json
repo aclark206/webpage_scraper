@@ -1,0 +1,27 @@
+{
+  "name": "webpage_scraper",
+  "version": "1.0.0",
+  "description": "Combs a webpage for product, price, imageURL, URL, and Time and puts them into a csvfile.",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+/aclark/webpage_scraper.git"
+  },
+  "keywords": [
+    "scraper"
+  ],
+  "author": "Amber Clark",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/aclark/webpage_scraper/issues"
+  },
+  "homepage": "https://github.com/aclark/webpage_scraper#readme",
+  "dependencies": {
+    "scrape-it": "^5.0.5"
+  },
+   "scripts": {
+    "start": "node scraper.js"
+  }
+}
