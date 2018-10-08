@@ -52,9 +52,7 @@ var createRecord = function (pageUrl){
 		// log the URL and the product, price, imageURL, and time to the CSV file
 		fileManager.logCSVRecord(recordCSV, homeDirectory, fileManager.getTodaysDate() + '.csv');
 	}).catch(error => { 
-			throw error; 
-			fileManager.getTodaysDate()
-			.then(date => fileManager.logError(date + " -- " + error.message, homeDirectory));
+			fileManager.logError(new Date() + " -- " + error.message, homeDirectory);
 		});
 }
 
@@ -92,14 +90,13 @@ let homeDirectory = "./data";
 let URL = "http://shirts4mike.com";
 let header = "Title, Price, imageURL, URL, Time \n";
 
-
+//
+// Create the directory and the csv file
 fileManager.checkDir(homeDirectory) // mk directory
     .then(fileManager.getTodaysDate) 
 	.then(date => fileManager.createFile(homeDirectory, '/' + date + '.csv', header)) 
     .catch(error => { 
-		throw error; 
-		fileManager.getTodaysDate()
-		.then(date => fileManager.logError(date + " -- " + error.message, homeDirectory));
+		 fileManager.logError(new Date() + " -- " + error.message, homeDirectory);
 	});
 
 	
@@ -114,6 +111,7 @@ scrapeIt(URL + "/shirts.php", {
 		   } 
 		}	
 	}
+//  iterate over all the result pages, scrape the data, save it to the csv file
 }).then(({ data, response }) => {
 	if (response.statusCode == 200){
 		//iterate over the data
@@ -122,10 +120,14 @@ scrapeIt(URL + "/shirts.php", {
 		}
 		console.log('All records logged to csv file.');
 	}
-}).catch(error => { 
-		throw error; 
-		fileManager.getTodaysDate()
-		.then(date => fileManager.logError(date + " -- " + error.message, homeDirectory));
-	}); 
+	else{
+		console.log("ERROR: " + response.statusCode + " Could not reach " + URL);
+		fileManager.logError("Something went wrong: " + response.statusCode + ":" + response.message + "\n", homeDirectory);
+	}
+	
+}).catch(error => { 		
+	console.log("Network error ocurred.  Could not reach " + URL);	
+	fileManager.logError(new Date() + "- " + error.name + " - " + error.message + "\n", homeDirectory);
+}); 
 	
 

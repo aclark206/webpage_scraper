@@ -38,12 +38,11 @@ var checkDir = function(path) {
 				resolve(true);
 			}
 			else if (error.code == 'EEXIST'){  // directory existed 
-				console.log("path" + path + " already exists");
 				resolve(true);
 			}
 			else {// something went wrong.  Handle error
-				fileManager.getTodaysDate()
-					.then(date => fileManager.logError(date + " -- " + error.message, path));
+				console.log("An error occurred creating " + path);
+				fileManager.logError(new Date() + " -- " + error.message, path);
 				reject(error);
 			}
 		});
@@ -122,11 +121,10 @@ var logError = function (errorMsg, path) {
 	checkDir(path) // make sure data directory exists
 		.then(fs.appendFile(path + '/scraper-error.log', errorMsg, error => {
 			if (error) {
-				console.log('ERROR creating scraper-error.log: ' + error.code);
-				throw err;
+				console.log('ERROR creating scraper-error.log: ' + error.name + error.message);
 			}
 			}))
-		.catch(error => { throw error; console.log(error.message)});
+		.catch(error => { console.log("Error occurred: " + error.name + error.message)});
 }
 
 
